@@ -3,7 +3,7 @@ package log15
 import (
 	"os"
 
-	"github.com/inconshreveable/log15/term"
+	"github.com/alecthomas/log15/term"
 	"github.com/mattn/go-colorable"
 )
 
