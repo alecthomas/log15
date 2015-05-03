@@ -46,6 +46,7 @@ func (f formatFunc) Format(r *Record) []byte {
 func TerminalFormat() Format {
 	return FormatFunc(func(r *Record) []byte {
 		var color = 0
+		var attr = 0
 		switch r.Lvl {
 		case LvlCrit:
 			color = 35
@@ -57,12 +58,21 @@ func TerminalFormat() Format {
 			color = 32
 		case LvlDebug:
 			color = 36
+		case LvlFine:
+			attr = 2
+			color = 32
+		case LvlFiner:
+			color = 36
+			attr = 3
+		case LvlFinest:
+			color = 33
+			attr = 3
 		}
 
 		b := &bytes.Buffer{}
 		lvl := strings.ToUpper(r.Lvl.String())
 		if color > 0 {
-			fmt.Fprintf(b, "\x1b[%dm%s\x1b[0m[%s] %s ", color, lvl, r.Time.Format(termTimeFormat), r.Msg)
+			fmt.Fprintf(b, "\x1b[%dm\x1b[%dm%s\x1b[0m[%s] %s ", attr, color, lvl, r.Time.Format(termTimeFormat), r.Msg)
 		} else {
 			fmt.Fprintf(b, "[%s] [%s] %s ", lvl, r.Time.Format(termTimeFormat), r.Msg)
 		}

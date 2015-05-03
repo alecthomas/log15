@@ -19,11 +19,20 @@ const (
 	LvlWarn
 	LvlInfo
 	LvlDebug
+	LvlFine
+	LvlFiner
+	LvlFinest
 )
 
 // Returns the name of a Lvl
 func (l Lvl) String() string {
 	switch l {
+	case LvlFinest:
+		return "fnst"
+	case LvlFiner:
+		return "finr"
+	case LvlFine:
+		return "fine"
 	case LvlDebug:
 		return "dbug"
 	case LvlInfo:
@@ -43,6 +52,12 @@ func (l Lvl) String() string {
 // Useful for parsing command line args and configuration files.
 func LvlFromString(lvlString string) (Lvl, error) {
 	switch lvlString {
+	case "finest", "fnst":
+		return LvlFinest, nil
+	case "finer", "finr":
+		return LvlFiner, nil
+	case "fine":
+		return LvlFine, nil
 	case "debug", "dbug":
 		return LvlDebug, nil
 	case "info":
@@ -83,6 +98,9 @@ type Logger interface {
 	SetHandler(h Handler)
 
 	// Log a message at the given level with context key/value pairs
+	Finest(msg string, ctx ...interface{})
+	Finer(msg string, ctx ...interface{})
+	Fine(msg string, ctx ...interface{})
 	Debug(msg string, ctx ...interface{})
 	Info(msg string, ctx ...interface{})
 	Warn(msg string, ctx ...interface{})
@@ -123,6 +141,18 @@ func newContext(prefix []interface{}, suffix []interface{}) []interface{} {
 	n := copy(newCtx, prefix)
 	copy(newCtx[n:], normalizedSuffix)
 	return newCtx
+}
+
+func (l *logger) Fine(msg string, ctx ...interface{}) {
+	l.write(msg, LvlFine, ctx)
+}
+
+func (l *logger) Finer(msg string, ctx ...interface{}) {
+	l.write(msg, LvlFiner, ctx)
+}
+
+func (l *logger) Finest(msg string, ctx ...interface{}) {
+	l.write(msg, LvlFinest, ctx)
 }
 
 func (l *logger) Debug(msg string, ctx ...interface{}) {
