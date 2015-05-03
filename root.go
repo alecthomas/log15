@@ -41,6 +41,21 @@ func Root() Logger {
 // etc.) to keep the call depth the same for all paths to logger.write so
 // runtime.Caller(2) always refers to the call site in client code.
 
+// Fine is a convenient alias for Root().Fine
+func Fine(msg string, ctx ...interface{}) {
+	root.write(msg, LvlDebug, ctx)
+}
+
+// Finer is a convenient alias for Root().Finer
+func Finer(msg string, ctx ...interface{}) {
+	root.write(msg, LvlDebug, ctx)
+}
+
+// Finest is a convenient alias for Root().Finest
+func Finest(msg string, ctx ...interface{}) {
+	root.write(msg, LvlDebug, ctx)
+}
+
 // Debug is a convenient alias for Root().Debug
 func Debug(msg string, ctx ...interface{}) {
 	root.write(msg, LvlDebug, ctx)
