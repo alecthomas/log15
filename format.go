@@ -63,10 +63,10 @@ func TerminalFormat() Format {
 			color = 32
 		case LvlFiner:
 			color = 36
-			attr = 3
+			attr = 2
 		case LvlFinest:
-			color = 33
-			attr = 3
+			color = 34
+			attr = 2
 		}
 
 		b := &bytes.Buffer{}
@@ -83,7 +83,7 @@ func TerminalFormat() Format {
 		}
 
 		// print the keys logfmt style
-		logfmt(b, r.Ctx, color)
+		logfmt(b, r.Ctx, attr, color)
 		return b.Bytes()
 	})
 }
@@ -97,12 +97,12 @@ func LogfmtFormat() Format {
 	return FormatFunc(func(r *Record) []byte {
 		common := []interface{}{r.KeyNames.Time, r.Time, r.KeyNames.Lvl, r.Lvl, r.KeyNames.Msg, r.Msg}
 		buf := &bytes.Buffer{}
-		logfmt(buf, append(common, r.Ctx...), 0)
+		logfmt(buf, append(common, r.Ctx...), 0, 0)
 		return buf.Bytes()
 	})
 }
 
-func logfmt(buf *bytes.Buffer, ctx []interface{}, color int) {
+func logfmt(buf *bytes.Buffer, ctx []interface{}, attr int, color int) {
 	for i := 0; i < len(ctx); i += 2 {
 		if i != 0 {
 			buf.WriteByte(' ')
@@ -116,7 +116,7 @@ func logfmt(buf *bytes.Buffer, ctx []interface{}, color int) {
 
 		// XXX: we should probably check that all of your key bytes aren't invalid
 		if color > 0 {
-			fmt.Fprintf(buf, "\x1b[%dm%s\x1b[0m=%s", color, k, v)
+			fmt.Fprintf(buf, "\x1b[%dm\x1b[%dm%s\x1b[0m=%s", attr, color, k, v)
 		} else {
 			fmt.Fprintf(buf, "%s=%s", k, v)
 		}
