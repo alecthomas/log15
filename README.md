@@ -2,7 +2,9 @@
 
 # log15 [![godoc reference](https://godoc.org/gopkg.in/inconshreveable/log15.v2?status.png)](https://godoc.org/gopkg.in/inconshreveable/log15.v2)
 
-Package log15 provides an opinionated, simple toolkit for best-practice logging in Go (golang) that is both human and machine readable. It is modeled after the Go standard library's [`io`](http://golang.org/pkg/io/) and [`net/http`](http://golang.org/pkg/net/http/) packages and is an alternative to the standard library's [`log`](http://golang.org/pkg/log/) package. 
+**NOTE: This is a fork of log15 for personal use, adding fine, finer and finest log levels. You probably do not want to use it.**
+
+Package log15 provides an opinionated, simple toolkit for best-practice logging in Go (golang) that is both human and machine readable. It is modeled after the Go standard library's [`io`](http://golang.org/pkg/io/) and [`net/http`](http://golang.org/pkg/net/http/) packages and is an alternative to the standard library's [`log`](http://golang.org/pkg/log/) package.
 
 ## Features
 - A simple, easy-to-understand API
@@ -28,7 +30,7 @@ import log "gopkg.in/inconshreveable/log15.v2"
 // all loggers can have key/value context
 srvlog := log.New("module", "app/server")
 
-// all log messages can have key/value context 
+// all log messages can have key/value context
 srvlog.Warn("abnormal conn rate", "rate", curRate, "low", lowRate, "high", highRate)
 
 // child loggers with inherited context
