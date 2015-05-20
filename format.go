@@ -72,7 +72,7 @@ func TerminalFormat() Format {
 		b := &bytes.Buffer{}
 		lvl := strings.ToUpper(r.Lvl.String())
 		if color > 0 {
-			fmt.Fprintf(b, "\x1b[%dm\x1b[%dm%s\x1b[0m\x1b[%dm[%s] %s ", attr, color, lvl, attr, r.Time.Format(termTimeFormat), r.Msg)
+			fmt.Fprintf(b, "\x1b[%dm\x1b[%dm%s\x1b[0m[%s] %s ", attr, color, lvl, r.Time.Format(termTimeFormat), r.Msg)
 		} else {
 			fmt.Fprintf(b, "[%s] [%s] %s ", lvl, r.Time.Format(termTimeFormat), r.Msg)
 		}
@@ -116,7 +116,7 @@ func logfmt(buf *bytes.Buffer, ctx []interface{}, attr int, color int) {
 
 		// XXX: we should probably check that all of your key bytes aren't invalid
 		if color > 0 {
-			fmt.Fprintf(buf, "\x1b[%dm\x1b[%dm%s\x1b[0m\x1b[%dm=%s", attr, color, k, attr, v)
+			fmt.Fprintf(buf, "\x1b[%dm\x1b[%dm%s\x1b[0m=%s", attr, color, k, v)
 		} else {
 			fmt.Fprintf(buf, "%s=%s", k, v)
 		}
